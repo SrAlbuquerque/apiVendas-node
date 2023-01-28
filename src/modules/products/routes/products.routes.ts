@@ -1,6 +1,5 @@
-import { celebrate, Segments } from 'celebrate';
+import { celebrate, Segments, Joi } from 'celebrate';
 import { Router } from 'express';
-import Joi from 'joi';
 import ProductsController from '../controllers/ProductsController';
 
 const productsRouter = Router();
@@ -12,7 +11,7 @@ productsRouter.get(
   '/:id',
   celebrate({
     [Segments.PARAMS]: {
-      id: Joi.string().uuid().required(),
+      id: Joi.number().required(),
     },
   }),
   productsController.show,
@@ -39,7 +38,7 @@ productsRouter.put(
       quantity: Joi.number().required(),
     },
     [Segments.PARAMS]: {
-      id: Joi.string().uuid().required(),
+      id: Joi.number().required(),
     },
   }),
   productsController.update,
@@ -48,10 +47,8 @@ productsRouter.put(
 productsRouter.delete(
   '/:id',
   celebrate({
-    [Segments.BODY]: {
-      name: Joi.string().required(),
-      price: Joi.number().precision(2),
-      quantity: Joi.number().required(),
+    [Segments.PARAMS]: {
+      id: Joi.number().required(),
     },
   }),
   productsController.delete,
