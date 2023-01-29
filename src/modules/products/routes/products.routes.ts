@@ -11,7 +11,7 @@ productsRouter.get(
   '/:id',
   celebrate({
     [Segments.PARAMS]: {
-      id: Joi.number().required(),
+      id: Joi.string().required(),
     },
   }),
   productsController.show,
@@ -38,7 +38,7 @@ productsRouter.put(
       quantity: Joi.number().required(),
     },
     [Segments.PARAMS]: {
-      id: Joi.number().required(),
+      id: Joi.string().required(),
     },
   }),
   productsController.update,
@@ -48,7 +48,7 @@ productsRouter.delete(
   '/:id',
   celebrate({
     [Segments.PARAMS]: {
-      id: Joi.number().required(),
+      id: Joi.string().required(),
     },
   }),
   productsController.delete,
