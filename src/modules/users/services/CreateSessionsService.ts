@@ -4,7 +4,7 @@ import { compare, hash } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import { getCustomRepository } from 'typeorm';
 import User from '../typeorm/entities/User';
-import { UsersRepository } from '../typeorm/repositories/UsersRepository';
+import UsersRepository from '../typeorm/repositories/UsersRepository';
 
 interface IRequest {
   email: string;
