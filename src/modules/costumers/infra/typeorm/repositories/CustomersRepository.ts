@@ -1,10 +1,30 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { ICreateCustomer } from '@modules/costumers/domain/models/ICreateCustomer';
+import { ICustomersRepository } from '@modules/costumers/domain/repositories/ICustomersRepository';
+import { getRepository, Repository } from 'typeorm';
 import Customer from '../entities/Customer';
 
-@EntityRepository(Customer)
-export default class CustomersRepository extends Repository<Customer> {
+export default class CustomersRepository implements ICustomersRepository {
+  private ormRepository: Repository<Customer>;
+  constructor() {
+    this.ormRepository = getRepository(Customer);
+  }
+
+  public async create({ name, email }: ICreateCustomer): Promise<Customer> {
+    const customer = this.ormRepository.create({ name, email });
+
+    await this.ormRepository.save(customer);
+
+    return customer;
+  }
+
+  public async save(customer: Customer): Promise<Customer> {
+    await this.ormRepository.save(customer);
+
+    return customer;
+  }
+
   public async findByName(name: string): Promise<Customer | undefined> {
-    const customer = this.findOne({
+    const customer = this.ormRepository.findOne({
       where: {
         name,
       },
@@ -14,7 +34,7 @@ export default class CustomersRepository extends Repository<Customer> {
   }
 
   public async findById(id: string): Promise<Customer | undefined> {
-    const customer = this.findOne({
+    const customer = this.ormRepository.findOne({
       where: {
         id,
       },
@@ -24,7 +44,7 @@ export default class CustomersRepository extends Repository<Customer> {
   }
 
   public async findByEmail(email: string): Promise<Customer | undefined> {
-    const customer = this.findOne({
+    const customer = this.ormRepository.findOne({
       where: {
         email,
       },
