@@ -3,8 +3,8 @@ import AppError from '@shared/errors/AppError';
 import { compare, hash } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import { getCustomRepository } from 'typeorm';
-import User from '../typeorm/entities/User';
-import UsersRepository from '../typeorm/repositories/UsersRepository';
+import User from '../infra/typeorm/entities/User';
+import UsersRepository from '../infra/typeorm/repositories/UsersRepository';
 
 interface IRequest {
   email: string;
@@ -30,7 +30,6 @@ class CreateSessionsService {
     if (!passwordConfirmed) {
       throw new AppError('Email ou senha inválido.', 401);
     }
-
     const token = sign({}, auth.jwt.secret, {
       subject: user.id,
       expiresIn: auth.jwt.expiresIn,
